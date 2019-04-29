@@ -176,7 +176,7 @@ void	build_bsp_tree(int node, t_bsp *bsp)
 		bsp->node[t->node].isleaf = 0;
 		bsp->node[t->node].front = bsp->nb_nodes + 1;
 		inc_nodes(bsp);
-		bsp->poly = t->front;
+		bsp->poly_list = t->front;
 		build_bsp_tree(bsp->nb_nodes, bsp);
 	}
 	if (t->back == NULL)
@@ -185,7 +185,7 @@ void	build_bsp_tree(int node, t_bsp *bsp)
 	{
 		bsp->node[t->node].back = bsp->nb_nodes + 1;
 		inc_nodes(bsp);
-		bsp->poly = t->back;
+		bsp->poly_list = t->back;
 		build_bsp_tree(bsp->nb_nodes, bsp);
 	}
 	free(t);
