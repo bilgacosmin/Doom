@@ -1,0 +1,2 @@
+polygon:1 1 0;0 1 0;0 1 1;1 1 1:bla.jpeg
+polygon:1 0 0;0 0 0;0 0 1;1 0 1:erew.bmp

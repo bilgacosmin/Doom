@@ -6,18 +6,33 @@
 /*   By: cbilga <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 08:22:39 by cbilga            #+#    #+#             */
-/*   Updated: 2019/03/15 18:39:05 by cbilga           ###   ########.fr       */
+/*   Updated: 2019/03/21 14:53:13 by cbilga           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BSP_H
 # define BSP_H
 
+#include <fcntl.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include "get_next_line.h"
+#include <math.h>
+
+typedef struct	s_vec t_vec;
+typedef struct	s_poly t_poly;
+typedef struct	s_inter t_inter;
+
 typedef struct	s_vec //vector
 {
-	float x;
-	float y;
-	float z;
+	float	x;
+	float	y;
+	float	z;
+	int		tx;
+	int		ty;
+//	t_vec	*next;
 }				t_vec;
 
 typedef struct	s_ver //vertex
@@ -35,11 +50,11 @@ typedef struct	s_box //bounding box
 
 typedef struct	s_poly //polygon
 {
-	t_ver		*ver_list;
+	t_vec		*ver_list;  //TAB
 	t_vec		normal;
-	int			nb_ver;
-	int			nb_indices;
-	int			*indices;
+	int			nb_ver; //points du polygone
+	int			nb_indices; 
+	int			*indices; //liste de coordonnées des triangles qui forment le polygone
 	t_poly		*next;
 	char		was_splitter;
 	int			texture;
@@ -80,6 +95,7 @@ typedef struct	s_tree //used in build_bsp_tree
 	t_poly  *back_split;
 	t_poly	*temp;
 	t_poly	*iter;
+	t_poly 	*clone;
 	t_vec	v1;
 	t_vec	v2;
 	t_vec	a;
@@ -112,7 +128,8 @@ typedef struct	s_bsp //global use
 	int			max_planes;
 	int			max_leafs;
 	int			max_portals;
-	t_poly		*poly;
+	t_poly 		*poly_list; //liste de poly naive
+	t_poly		*poly;  //tableau de polys traités
 	t_node		*node;
 	t_leaf		*leaf;
 	t_plane		*plane;
@@ -136,5 +153,82 @@ typedef struct	s_cpoly //used in class_poly
 	t_vec	dir;
 	int		i;
 }				t_cpoly;
+
+typedef struct	s_inter
+{
+	t_vec	*start;
+	t_vec	*end;
+	t_vec	*point;
+	t_vec	*normal;
+	t_vec	inter;
+	t_vec	*direction;
+	t_vec	*l;
+	float	line_len;
+	float	dist;
+	float	perc;
+}				t_inter;
+
+typedef struct s_split //used in split poly
+{
+	t_vec	front[10];
+	t_vec	back[10];
+	t_vec	*first;
+	t_vec	*normal;
+	t_vec	*intersect;
+	t_vec	*point;
+	t_vec	*a;
+	t_vec	*b;
+	t_vec	copy;
+	int		f_count;
+	int		b_count;
+	int		loop;
+	int		curr_ver;
+	int		class;
+	int 	i;
+	//int		result;
+	float	percent;
+	t_inter	inter;
+	float	deltax;
+	float	deltay;
+	float	texx;
+	float	texy;
+	int 	v0;
+	int 	v1;
+	int 	v2;
+}				t_split;
+
+typedef struct	s_spoly //deprec
+{
+	t_poly	*f;
+	t_poly	*b;
+}				t_spoly;
+
+void 	add_vertices(t_poly *new, char *line, int i);
+void 	add_poly(t_poly **list, char *line);
+t_vec	*create_vec(float x, float y, float z);
+void	bsp_init(t_bsp *bsp);
+void	inc_polys(t_bsp *bsp);
+void	inc_nodes(t_bsp *bsp);
+void    inc_leafs(t_bsp *bsp);
+void    inc_planes(t_bsp *bsp);
+void	calc_box(t_box *box, t_poly *p);
+void	free_poly(t_poly *p);
+int		class_point(t_vec *pos, t_plane *plane);
+void	build_bsp_tree(int node, t_bsp *bsp);
+void	init_inter(t_inter *inter, t_split	*split);
+int		get_inter(t_inter *inter);
+int		select_splitter(t_bsp *bsp);
+void	split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back);
+t_poly 	*loadMap(char *file);
+void 	add_poly(t_poly **list, char *line);
+int 	count_vertices(char *line, int i);
+void 	add_vertices(t_poly *new, char *line, int i);
+void	create_normal(t_poly *list);
+void	triangulize(t_poly *list);
+char	class_poly(t_plane *plane, t_poly *poly);
+int 	ft_abs(int i);
+void	print_bsp(t_bsp *bsp);
+void	print_nodes(t_poly *poly);
+t_poly 	*clone_poly(t_poly *poly);
 
 #endif

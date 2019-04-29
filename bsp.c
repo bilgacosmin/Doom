@@ -10,26 +10,31 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "bsp.h"
+
 void	bsp_init(t_bsp *bsp)
 {
-	max_nodes = 100;
-    max_polys = 100;
-    max_planes = 100;
-    max_leafs = 100;
-    max_portals = 100;
-    if (!(poly = (t_poly*)malloc(sizeof(t_poly) * max_polys)))
+
+	bsp->max_nodes = 100;
+    bsp->max_polys = 100;
+    bsp->max_planes = 100;
+    bsp->max_leafs = 100;
+    bsp->max_portals = 100;
+    if (!(bsp->poly = (t_poly*)malloc(sizeof(t_poly) * bsp->max_polys)))
 		return ;
-	if (!(node = (t_node*)malloc(sizeof(t_node) * max_nodes)))
+	if (!(bsp->node = (t_node*)malloc(sizeof(t_node) * bsp->max_nodes)))
 		return ;
-	if (!(leaf = (t_leaf*)malloc(sizeof(t_leaf) * max_leafs)))
+	if (!(bsp->leaf = (t_leaf*)malloc(sizeof(t_leaf) * bsp->max_leafs)))
 		return ;
+	bsp->poly_list = loadMap("test_poly.txt");
+	triangulize(bsp->poly_list);
     //t_portal  **portal;
     //BYTE *PVSData;
-    nb_polys = 0;
-    nb_nodes = 0;
-    nb_leafs = 0;
-    nb_planes = 0;
-    nb_portals = 0;
+    bsp->nb_polys = 0;
+    bsp->nb_nodes = 0;
+    bsp->nb_leafs = 0;
+    bsp->nb_planes = 0;
+    bsp->nb_portals = 0;
 }
 
 void	inc_polys(t_bsp *bsp)
@@ -109,8 +114,8 @@ void    inc_planes(t_bsp *bsp)
         bsp->max_planes += 100;
         if (!(new = (t_plane*)malloc(sizeof(t_plane))))
             return ;
-        i = 0;
         while (i < bsp->nb_planes)
+        i = 0;
         {
 			 new[i] = bsp->plane[i];
             i++;
@@ -204,4 +209,4 @@ Runtime:
 				RenderLeaf(i);
 			}
 		}
-	}
+	}**/
