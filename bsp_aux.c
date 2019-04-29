@@ -40,6 +40,12 @@ t_poly 	*clone_poly(t_poly *poly)
 	}
 	clone->next = poly->next;
 	clone->was_splitter = poly->was_splitter;
+	if (poly->was_splitter > 1)
+	{
+		printf("SUKKAA\n");
+		//print_nodes(poly);
+		printf("CLONE POLY WAS SPLIT %d\n", clone->was_splitter);
+	}
 	clone->texture = poly->texture;
 	return (clone);
 }

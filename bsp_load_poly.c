@@ -34,6 +34,7 @@ void add_poly(t_poly **list, char *line)
 	new->ver_list = NULL;
 	new->nb_ver = 0;
 	new->next = NULL;
+	new->was_splitter = 0;
 	i = 0;
 	while (line[i] && line[i] != ':')
 		i++;
@@ -88,7 +89,7 @@ void add_vertices(t_poly *new, char *line, int i)
 	int x[5];
 
 	new->nb_ver = count_vertices(line, i);
-	printf("ADD VERTICES %d\n", new->nb_ver);
+	//printf("ADD VERTICES %d\n", new->nb_ver);
 	if (!(new->ver_list = (t_vec*)malloc(sizeof(t_vec) * new->nb_ver)))
 		exit(0);
 	x[3] = 0;
@@ -116,6 +117,7 @@ void add_vertices(t_poly *new, char *line, int i)
 
 void create_normal(t_poly *list)
 {
+	//direction correcte -> aiguilles du montre
 	t_vec *e1;
 	t_vec *e2;
 	float mag;
@@ -163,9 +165,9 @@ void triangulize(t_poly *list) //ajoute les triangles dans indices
 			tmp->indices[(i[0] * 3) + 2] = i[3];
 			i[0]++;
 		}
+		create_normal(tmp);
 		tmp = tmp->next;
 	}
-	create_normal(list);
 }
 /*
 int main()

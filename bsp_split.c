@@ -76,7 +76,7 @@ int			select_splitter(t_bsp *bsp) //function choosing best splitter for a more b
 {
 	t_select_split	s;
 
-	printf("SELECT SPLIT\n");
+	//printf("SELECT SPLIT\n");
 	init_select_split(&s, bsp->poly_list);
 	while(s.splitter != NULL)
 	{
@@ -96,7 +96,7 @@ int			select_splitter(t_bsp *bsp) //function choosing best splitter for a more b
 	bsp->plane[bsp->nb_planes].point = s.selected->ver_list[0];
 	bsp->plane[bsp->nb_planes].normal = s.selected->normal;
 	inc_planes(bsp);
-	printf("END SELECT SPLIT\n");
+	//printf("END SELECT SPLIT\n");
 	return (bsp->nb_planes - 1);
 }
 
@@ -120,9 +120,10 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 		split.front[split.f_count++] = *split.first;
 		split.back[split.b_count++] = *split.first;
 	}
+	//printf("SPLIT AVANT WHILE\n");
 	while (split.loop < poly->nb_ver + 1) //+1?
 	{
-		//printf("HOP\n");
+		//printf("WHILE\n");
 		if (split.loop == poly->nb_ver)
 			split.curr_ver = 0;
 		else
@@ -136,14 +137,16 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 		{
 			split.back[split.b_count++] = poly->ver_list[split.curr_ver];
 			split.front[split.f_count++] = poly->ver_list[split.curr_ver];
-			//printf("HOP\n");
+			//printf("IF\n");
 		}
 		else
 		{
-			//printf("HOP\n");
+			//printf("ELSE\n");
 			init_inter(&(split.inter), &split);
+			//printf("ICI\n");
 			if (get_inter(&split.inter) == 1)
 			{
+			//	printf("IF\n");
 				split.deltax = poly->ver_list[split.curr_ver].tx - poly->ver_list[split.loop - 1].tx;
 				split.deltay = poly->ver_list[split.curr_ver].ty - poly->ver_list[split.loop - 1].ty;
 				split.texx = poly->ver_list[split.loop - 1].tx + split.deltax * split.inter.perc;
@@ -170,6 +173,7 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 			}
 			else
 			{
+			//	printf("ELSe\n");
 				if (split.class == 1)
 				{
 					if (split.curr_ver != 0)
@@ -207,10 +211,10 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 		printf("HOP %d %d \n", front->nb_indices, back->nb_indices);
 		if (!(front->indices = (int*)malloc(sizeof(int) * front->nb_indices)))
 			exit(0);
-		printf("HOP\n");
+		//printf("HOP\n");
 		if (!(back->indices = (int*)malloc(sizeof(int) * back->nb_indices)))
 			exit(0);
-		printf("HOP\n");
+		//printf("HOP\n");
 		split.i = 0;
 		while (split.i < front->nb_indices / 3)
 		{

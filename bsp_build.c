@@ -79,9 +79,10 @@ static void class_case2(t_tree *t, t_bsp *bsp)
 		return ;
 	//printf("HOP\n");
 	split_poly(t->test, &bsp->plane[bsp->node[t->node].plane], front, back);
-	printf("HOP\n");
+	//printf("HOP\n");
 	front->was_splitter = t->test->was_splitter;
 	back->was_splitter = t->test->was_splitter;
+	printf("BUILD WAS SPLIT %d %d\n", front->was_splitter, back->was_splitter);
 	front->texture = t->test->texture;
 	back->texture = t->test->texture;
 	free_poly(t->test);
@@ -96,6 +97,7 @@ static void class_case2(t_tree *t, t_bsp *bsp)
 static void class_case(t_tree *t, t_bsp *bsp)
 {
 	//printf("CLASS CASE\n");
+	//printf("CLASS CASE SPLIT %d\n", t->test->was_splitter);
 	t->clone = clone_poly(t->test);
 	if (t->class == 0)
 		class_case0(t, bsp);
@@ -111,9 +113,9 @@ void	build_bsp_tree(int node, t_bsp *bsp)
 	t_tree *t;
 
 	//printf("TREE\n");
-	printf("VER %d\n", bsp->poly_list->nb_ver);
+	//printf("VER %d\n", bsp->poly_list->nb_ver);
 	t = init_tree(node);
-	printf("TREE2 %d\n", bsp->node[t->node].plane);
+	//printf("TREE2 %d\n", bsp->node[t->node].plane);
 	bsp->node[t->node].plane = select_splitter(bsp);
 	if (bsp->node[t->node].plane == -1)
 	{
@@ -154,7 +156,7 @@ void	build_bsp_tree(int node, t_bsp *bsp)
 	//printf("ICI ??\n");
 	if (t->count == 0)
 	{
-		printf("ON EST LAS\n");
+	//	printf("ON EST LAS\n");
 		t->iter = t->front;
 		bsp->leaf[bsp->nb_leafs].start_poly = bsp->nb_polys;
 		while (t->iter != NULL)

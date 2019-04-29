@@ -34,12 +34,28 @@ void print_polys(t_poly *poly, int nb_polys)
 
 void print_planes(t_plane *planes, int nb_planes)
 {
-
+	int i;
+	printf("NB planes %d\n", nb_planes);
+	i = 0;
+	while (i < nb_planes)
+	{
+		printf("Plane (%d) -> point (x = %f y = %f z = %f) ; normal (x = %f y = %f z = %f)\n", i, planes[i].point.x, planes[i].point.y, planes[i].point.z, planes[i].normal.x, planes[i].normal.y, planes[i].normal.z);
+		i++;
+	}
+	printf("\n");
 }
 
 void print_leafs(t_leaf *leafs, int nb_leafs)
 {
-
+	int i;
+	printf("NB leafs %d\n", nb_leafs);
+	i = 0;
+	while (i < nb_leafs)
+	{
+		printf("Leaf (%d) %d - %d\n",i, leafs[i].start_poly, leafs[i].end_poly);
+		i++;
+	}
+	printf("\n");
 }
 
 void print_bsp(t_bsp *bsp)
