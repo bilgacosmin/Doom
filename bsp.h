@@ -230,5 +230,7 @@ int 	ft_abs(int i);
 void	print_bsp(t_bsp *bsp);
 void	print_nodes(t_poly *poly);
 t_poly 	*clone_poly(t_poly *poly);
+void 	print_planes(t_plane *planes, int nb_planes);
+void	print_polys(t_poly *poly, int nb_polys);
 
 #endif

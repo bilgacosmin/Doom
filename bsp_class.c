@@ -34,6 +34,9 @@ char class_poly(t_plane *plane, t_poly *poly)
 	t_cpoly	c;
 
 	//printf("CLASS POLY\n");
+	c.behind = 0;
+	c.onplane = 0;
+	c.infront = 0;
 	c.v1 = plane->point;
 	c.i = 0;
 	while (c.i < poly->nb_ver)

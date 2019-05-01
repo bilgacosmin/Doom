@@ -104,7 +104,9 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 {
 	t_split split;
 
-	//printf("SPLIT POLY\n");
+	printf("SPLIT POLY\n");
+	print_planes(plane, 1);
+	print_polys(poly, 1);
 	init_split(&split);
 	//printf("HOP\n");
 	split.point = &plane->point;
@@ -121,7 +123,7 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 		split.back[split.b_count++] = *split.first;
 	}
 	//printf("SPLIT AVANT WHILE\n");
-	while (split.loop < poly->nb_ver + 1) //+1?
+	while (split.loop < poly->nb_ver + 1) // +1 car le dernier == 0
 	{
 		//printf("WHILE\n");
 		if (split.loop == poly->nb_ver)
@@ -132,12 +134,12 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 		split.b = &poly->ver_list[split.curr_ver];
 		split.normal = &plane->normal;
 		split.class = class_point(split.b, plane);
-		//printf("HOP\n");
+		printf("split class %d\n", split.class);
 		if (split.class == 0)
 		{
 			split.back[split.b_count++] = poly->ver_list[split.curr_ver];
 			split.front[split.f_count++] = poly->ver_list[split.curr_ver];
-			//printf("IF\n");
+			//printf("split class 0 for %d\n", split.loop);
 		}
 		else
 		{
@@ -146,7 +148,7 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 			//printf("ICI\n");
 			if (get_inter(&split.inter) == 1)
 			{
-			//	printf("IF\n");
+				printf("IF\n");
 				split.deltax = poly->ver_list[split.curr_ver].tx - poly->ver_list[split.loop - 1].tx;
 				split.deltay = poly->ver_list[split.curr_ver].ty - poly->ver_list[split.loop - 1].ty;
 				split.texx = poly->ver_list[split.loop - 1].tx + split.deltax * split.inter.perc;
@@ -173,15 +175,19 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 			}
 			else
 			{
-			//	printf("ELSe\n");
+				printf("ELSe\n");
 				if (split.class == 1)
 				{
+					printf("chop\n");
 					if (split.curr_ver != 0)
 						split.front[split.f_count++] = poly->ver_list[split.curr_ver];
 				}
 				if (split.class == -1)
+				{
+					printf("chip\n");
 					if (split.curr_ver != 0)
 						split.back[split.b_count++] = poly->ver_list[split.curr_ver];
+				}
 			}
 		}
 		front->nb_ver = 0;
