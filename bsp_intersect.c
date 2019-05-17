@@ -47,6 +47,7 @@ int	get_inter(t_inter *inter)
 		if (inter->perc > 1)
 			return (0);
 	}
+	//printf("inter4\n");
 	inter->inter.x = inter->start->x + inter->direction->x * inter->perc;
 	inter->inter.y = inter->start->y + inter->direction->y * inter->perc;
 	inter->inter.z = inter->start->z + inter->direction->z * inter->perc;

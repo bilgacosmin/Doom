@@ -52,7 +52,22 @@ void print_leafs(t_leaf *leafs, int nb_leafs)
 	i = 0;
 	while (i < nb_leafs)
 	{
-		printf("Leaf (%d) %d - %d\n",i, leafs[i].start_poly, leafs[i].end_poly);
+		printf("Leaf (%d) %d - %d Box: %f %f %f - %f %f %f\n",i, leafs[i].start_poly, leafs[i].end_poly - 1, leafs[i].bbox.boxmin.x, leafs[i].bbox.boxmin.y, leafs[i].bbox.boxmin.z
+			,leafs[i].bbox.boxmax.x, leafs[i].bbox.boxmax.y, leafs[i].bbox.boxmax.z);
+		i++;
+	}
+	printf("\n");
+}
+
+void print_portals(t_portal **portal, int nb_portals)
+{
+	int i;
+
+	printf("NB portals %d\n", nb_portals);
+	i = 0;
+	while (i < nb_portals)
+	{
+		printf("Portal (%d) Leafs: %d %d\n", i, portal[i]->leafs[0], portal[i]->leafs[1]);
 		i++;
 	}
 	printf("\n");
@@ -70,7 +85,7 @@ void print_bsp(t_bsp *bsp)
 	print_polys(bsp->poly, bsp->nb_polys);
 	print_planes(bsp->plane, bsp->nb_planes);
 	print_leafs(bsp->leaf, bsp->nb_leafs);
-	//print_portals(bsp->portals);
+	print_portals(bsp->portal, bsp->nb_portals);
 	/*int			max_nodes;
 	int			max_polys;
 	int			max_planes;

@@ -40,12 +40,12 @@ t_poly 	*clone_poly(t_poly *poly)
 	}
 	clone->next = poly->next;
 	clone->was_splitter = poly->was_splitter;
-	if (poly->was_splitter > 1)
+/*	if (poly->was_splitter > 1)
 	{
 		printf("SUKKAA\n");
 		//print_nodes(poly);
 		printf("CLONE POLY WAS SPLIT %d\n", clone->was_splitter);
-	}
+	}*/
 	clone->texture = poly->texture;
 	return (clone);
 }
@@ -61,6 +61,13 @@ t_vec	*create_vec(float x, float y, float z)
 	new->z = z;
 	//new->next = NULL;
 	return (new);
+}
+
+void	set_vec(t_vec *new, float x, float y, float z)
+{
+	new->x = x;
+	new->y = y;
+	new->z = z;
 }
 /*float	fabs(float f)
 {
@@ -116,7 +123,7 @@ int		class_point(t_vec *pos, t_plane *plane)
 	t_vec	v1;
 	t_vec	dir;
 
-	v1 = plane->normal;
+	v1 = plane->point;
 	dir.x = v1.x - pos->x;
 	dir.y = v1.y - pos->y;
 	dir.z = v1.z - pos->z;
@@ -126,4 +133,26 @@ int		class_point(t_vec *pos, t_plane *plane)
 	if (res > 0.001)
 		return (-1);
 	return (0);
+}
+
+void	vec_cross_prod(t_vec* a, t_vec *b, t_vec *c)
+{
+	c->x = a->y * b->z - a->z * b->y;
+	c->y = a->z * b->x - a->x * b->z;
+	c->z = a->x * b->y - a->y * b->x;
+}
+
+float	vec_dot_prod(t_vec *a, t_vec *b)
+{
+	return ((a->x + b->x) * (a->y + b->y) * (a->z + b->z));
+}
+
+void	vec_normalize(t_vec *a, t_vec *b)
+{
+	float magnitude;
+
+	magnitude = sqrt(a->x * a->x + a->y * a->y + a->z * a->z);
+	b->x = a->x / magnitude;
+	b->y = a->y / magnitude;
+	b->z = a->z / magnitude;
 }

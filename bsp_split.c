@@ -125,7 +125,7 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 	//printf("SPLIT AVANT WHILE\n");
 	while (split.loop < poly->nb_ver + 1) // +1 car le dernier == 0
 	{
-		//printf("WHILE\n");
+		//printf("COUNTING\n");
 		if (split.loop == poly->nb_ver)
 			split.curr_ver = 0;
 		else
@@ -134,7 +134,7 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 		split.b = &poly->ver_list[split.curr_ver];
 		split.normal = &plane->normal;
 		split.class = class_point(split.b, plane);
-		printf("split class %d\n", split.class);
+		//printf("split class %d\n", split.class);
 		if (split.class == 0)
 		{
 			split.back[split.b_count++] = poly->ver_list[split.curr_ver];
@@ -148,7 +148,7 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 			//printf("ICI\n");
 			if (get_inter(&split.inter) == 1)
 			{
-				printf("IF\n");
+				//printf("INTER\n");
 				split.deltax = poly->ver_list[split.curr_ver].tx - poly->ver_list[split.loop - 1].tx;
 				split.deltay = poly->ver_list[split.curr_ver].ty - poly->ver_list[split.loop - 1].ty;
 				split.texx = poly->ver_list[split.loop - 1].tx + split.deltax * split.inter.perc;
@@ -160,6 +160,7 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 				split.copy.ty = split.texy;
 				if (split.class == 1)
 				{
+					//printf("FRONT INTER\n");
 					split.back[split.b_count++] = split.copy;
 					split.front[split.f_count++] = split.copy;
 					if (split.curr_ver != 0)
@@ -167,6 +168,7 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 				}
 				if (split.class == -1)
 				{
+					//printf("back INTER\n");
 					split.back[split.b_count++]= split.copy;
 					split.front[split.f_count++] = split.copy;
 					if (split.curr_ver != 0)
@@ -175,29 +177,32 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 			}
 			else
 			{
-				printf("ELSe\n");
+				//printf("ELSe\n");
 				if (split.class == 1)
 				{
-					printf("chop\n");
+					//printf("front\n");
 					if (split.curr_ver != 0)
 						split.front[split.f_count++] = poly->ver_list[split.curr_ver];
 				}
 				if (split.class == -1)
 				{
-					printf("chip\n");
+					//printf("back\n");
 					if (split.curr_ver != 0)
 						split.back[split.b_count++] = poly->ver_list[split.curr_ver];
 				}
 			}
 		}
+			split.loop++;
+	}
 		front->nb_ver = 0;
 		back->nb_ver = 0;
 		//printf("HOP\n");
+		//printf("FCOUNT %d BCOUNT %d\n", split.f_count, split.b_count);
 		if (!(front->ver_list = (t_vec*)malloc(sizeof(t_vec) * split.f_count)))
 			exit(0);
 		if (!(back->ver_list = (t_vec*)malloc(sizeof(t_vec) * split.b_count)))
 			exit(0);
-		printf("FCOUNT %d BCOUNT %d\n", split.f_count, split.b_count);
+		//printf("FCOUNT %d BCOUNT %d\n", split.f_count, split.b_count);
 		split.i = 0;
 		while (split.i < split.f_count)
 		{
@@ -214,7 +219,8 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 		}
 		front->nb_indices = (front->nb_ver - 2) * 3;
 		back->nb_indices = (back->nb_ver - 2) * 3;
-		printf("HOP %d %d \n", front->nb_indices, back->nb_indices);
+		if (front->nb_indices < 0 || back->nb_indices < 0)
+			printf("HOP %d %d \n", front->nb_indices, back->nb_indices);
 		if (!(front->indices = (int*)malloc(sizeof(int) * front->nb_indices)))
 			exit(0);
 		//printf("HOP\n");
@@ -261,7 +267,7 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 		}
 		front->normal = poly->normal;
 		back->normal = poly->normal;
-		split.loop++;
-	}
+		//split.loop++;
+	//}
 	//printf("FIN SPLIT POLY\n");
 }

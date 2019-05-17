@@ -26,9 +26,10 @@ void	bsp_init(t_bsp *bsp)
 		return ;
 	if (!(bsp->leaf = (t_leaf*)malloc(sizeof(t_leaf) * bsp->max_leafs)))
 		return ;
+	if (!(bsp->portal = (t_portal**)malloc(sizeof(t_portal*) * bsp->max_portals)))
+			return ;
 	bsp->poly_list = loadMap("test_poly.txt");
 	triangulize(bsp->poly_list);
-    //t_portal  **portal;
     //BYTE *PVSData;
     bsp->nb_polys = 0;
     bsp->nb_nodes = 0;
@@ -46,7 +47,7 @@ void	inc_polys(t_bsp *bsp)
 	if (bsp->nb_polys == bsp->max_polys)
 	{
 		bsp->max_polys += 100;
-		if (!(new = (t_poly*)malloc(sizeof(t_poly))))
+		if (!(new = (t_poly*)malloc(sizeof(t_poly) * bsp->max_polys)))
 			return ;
 		i = 0;
 		while (i < bsp->nb_polys)
@@ -68,7 +69,7 @@ void	inc_nodes(t_bsp *bsp)
     if (bsp->nb_nodes == bsp->max_nodes)
     {
 		bsp->max_nodes += 100;
-		if (!(new = (t_node*)malloc(sizeof(t_node))))
+		if (!(new = (t_node*)malloc(sizeof(t_node) * bsp->max_nodes)))
 			return ;
 		i = 0;
 		while (i < bsp->nb_nodes)
@@ -90,7 +91,7 @@ void    inc_leafs(t_bsp *bsp)
     if (bsp->nb_leafs == bsp->max_leafs)
     {
         bsp->max_leafs += 100;
-        if (!(new = (t_leaf*)malloc(sizeof(t_leaf))))
+        if (!(new = (t_leaf*)malloc(sizeof(t_leaf) * bsp->max_leafs)))
             return ;
         i = 0;
         while (i < bsp->nb_leafs)
@@ -112,12 +113,12 @@ void    inc_planes(t_bsp *bsp)
     if (bsp->nb_planes == bsp->max_planes)
     {
         bsp->max_planes += 100;
-        if (!(new = (t_plane*)malloc(sizeof(t_plane))))
+        if (!(new = (t_plane*)malloc(sizeof(t_plane) * bsp->max_planes)))
             return ;
-        while (i < bsp->nb_planes)
         i = 0;
+        while (i < bsp->nb_planes)
         {
-			 new[i] = bsp->plane[i];
+			new[i] = bsp->plane[i];
             i++;
         }
         free(bsp->plane);
@@ -125,6 +126,27 @@ void    inc_planes(t_bsp *bsp)
     }
 }
 
+void	inc_portals(t_bsp *bsp)
+{
+	t_portal	**new;
+	int 		i;
+
+	bsp->nb_portals++;
+	if (bsp->nb_portals == bsp->max_portals)
+	{
+		bsp->max_portals += 100;
+		if (!(new = (t_portal**)malloc(sizeof(t_portal*) * bsp->max_portals)))
+			return ;
+		i = 0;
+		while (i < bsp->nb_portals)
+		{
+			new[i] = bsp->portal[i];
+			i++;
+		}
+		free(bsp->portal);
+		bsp->portal = new;
+	}
+}
 /**
 BSP algorithm:
 
