@@ -174,7 +174,7 @@ typedef struct	s_inter
 	t_vec	*point;
 	t_vec	*normal;
 	t_vec	inter;
-	t_vec	*direction;
+	t_vec	direction;
 	t_vec	*l;
 	float	line_len;
 	float	dist;
@@ -267,6 +267,27 @@ typedef struct s_chk_dup
 	float size_old;
 }				t_chk_dup;
 
+/// test structs 
+
+typedef struct 	s_nodestack 
+{
+	int node;
+	int jumpback;
+}				t_nodestack;
+
+typedef struct s_buildp
+{
+	int stackpointer;
+	int portalindex;
+	int i;
+	int index;
+	t_nodestack *nodestack;
+	t_portal *init;
+	t_portal *p_list;
+	t_portal *iter;
+	t_portal *tmp;
+}				t_buildp;
+
 void 	add_vertices(t_poly *new, char *line, int i);
 void 	add_poly(t_poly **list, char *line);
 t_vec	*create_vec(float x, float y, float z);
@@ -293,7 +314,7 @@ void	triangulize(t_poly *list);
 char	class_poly(t_plane *plane, t_poly *poly);
 int 	ft_abs(int i);
 void	print_bsp(t_bsp *bsp);
-void	print_nodes(t_poly *poly);
+void	print_nodes(t_node *node, int nb_nodes);
 t_poly 	*clone_poly(t_poly *poly);
 void 	print_planes(t_plane *planes, int nb_planes);
 void	print_polys(t_poly *poly, int nb_polys);
@@ -307,5 +328,11 @@ void	init_portal(t_portal *portal);
 t_portal *clip_portal(t_bsp *bsp, int node, t_portal *portal);
 void	delete_portal(t_portal *portal);
 void	print_portals(t_portal **portal, int nb_portals);
+//void	build_portal(t_bsp *bsp, t_bportal *bportal);
+void 	build_portal(t_bsp *bsp);
+void 	build_portal_start(t_bsp *bsp, t_buildp *buildp);
+void 	build_portal_back(t_bsp *bsp, t_buildp *buildp);
+void	build_portal_end(t_bsp *bsp, t_buildp *buildp);
+void 	print_poly_list(t_poly *poly);
 
 #endif

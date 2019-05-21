@@ -1,0 +1,16 @@
+[=======~	MAGIC FILE	~========]
+
+R Map Texture 60 60 10 					// sizemax/ hauteur
+C Solid Texture 20 20 40 40 30 			// origin/dest/hauteur
+R Solid Texture 25 40 35 60 15
+L Solid Texture 30 0 60 30
+L Solid Texture 60 30 45 60
+R Liquid Texture 0 0 15 30 0
+
+S 40 55 10
+E Path 20 5 10
+
+Status :Walk
+Hp :--
+shield :--
+inventory :--

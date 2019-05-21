@@ -104,9 +104,9 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 {
 	t_split split;
 
-	printf("SPLIT POLY\n");
-	print_planes(plane, 1);
-	print_polys(poly, 1);
+	//printf("SPLIT POLY\n");
+	//print_planes(plane, 1);
+	//print_polys(poly, 1);
 	init_split(&split);
 	//printf("HOP\n");
 	split.point = &plane->point;
@@ -194,80 +194,78 @@ void		split_poly(t_poly *poly, t_plane *plane, t_poly *front, t_poly *back)
 		}
 			split.loop++;
 	}
-		front->nb_ver = 0;
-		back->nb_ver = 0;
-		//printf("HOP\n");
-		//printf("FCOUNT %d BCOUNT %d\n", split.f_count, split.b_count);
-		if (!(front->ver_list = (t_vec*)malloc(sizeof(t_vec) * split.f_count)))
-			exit(0);
-		if (!(back->ver_list = (t_vec*)malloc(sizeof(t_vec) * split.b_count)))
-			exit(0);
-		//printf("FCOUNT %d BCOUNT %d\n", split.f_count, split.b_count);
-		split.i = 0;
-		while (split.i < split.f_count)
+	front->nb_ver = 0;
+	back->nb_ver = 0;
+	//printf("HOP\n");
+	//printf("FCOUNT %d BCOUNT %d\n", split.f_count, split.b_count);
+	if (!(front->ver_list = (t_vec*)malloc(sizeof(t_vec) * split.f_count)))
+		exit(0);
+	if (!(back->ver_list = (t_vec*)malloc(sizeof(t_vec) * split.b_count)))
+		exit(0);
+	//printf("FCOUNT %d BCOUNT %d\n", split.f_count, split.b_count);
+	split.i = 0;
+	while (split.i < split.f_count)
+	{
+		front->nb_ver++;
+		front->ver_list[split.i] = split.front[split.i];
+		split.i++;
+	}
+	split.i = 0;
+	while (split.i < split.b_count)
+	{
+		back->nb_ver++;
+		back->ver_list[split.i] = split.back[split.i];
+		split.i++;
+	}
+	front->nb_indices = (front->nb_ver - 2) * 3;
+	back->nb_indices = (back->nb_ver - 2) * 3;
+	if (front->nb_indices < 0 || back->nb_indices < 0)
+		printf("HOP %d %d \n", front->nb_indices, back->nb_indices);
+	if (!(front->indices = (int*)malloc(sizeof(int) * front->nb_indices)))
+		exit(0);
+	//printf("HOP\n");
+	if (!(back->indices = (int*)malloc(sizeof(int) * back->nb_indices)))
+		exit(0);
+	//printf("HOP\n");
+	split.i = 0;
+	while (split.i < front->nb_indices / 3)	
+	{
+		if (split.i == 0)
 		{
-			front->nb_ver++;
-			front->ver_list[split.i] = split.front[split.i];
-			split.i++;
+			split.v0 = 0;
+			split.v1 = 1;
+			split.v2 = 2;
 		}
-		split.i = 0;
-		while (split.i < split.b_count)
+		else
 		{
-			back->nb_ver++;
-			back->ver_list[split.i] = split.back[split.i];
-			split.i++;
+			split.v1 = split.v2;
+			split.v2++;
 		}
-		front->nb_indices = (front->nb_ver - 2) * 3;
-		back->nb_indices = (back->nb_ver - 2) * 3;
-		if (front->nb_indices < 0 || back->nb_indices < 0)
-			printf("HOP %d %d \n", front->nb_indices, back->nb_indices);
-		if (!(front->indices = (int*)malloc(sizeof(int) * front->nb_indices)))
-			exit(0);
-		//printf("HOP\n");
-		if (!(back->indices = (int*)malloc(sizeof(int) * back->nb_indices)))
-			exit(0);
-		//printf("HOP\n");
-		split.i = 0;
-		while (split.i < front->nb_indices / 3)
+		front->indices[split.i * 3] = split.v0;
+		front->indices[(split.i * 3) + 1] = split.v1;
+		front->indices[(split.i * 3) + 2] = split.v2;
+		split.i++;
+	}
+	split.i = 0;
+	while (split.i < back->nb_indices / 3)
+	{
+		if (split.i == 0)
 		{
-			if (split.i == 0)
-			{
-				split.v0 = 0;
-				split.v1 = 1;
-				split.v2 = 2;
-			}
-			else
-			{
-				split.v1 = split.v2;
-				split.v2++;
-			}
-			front->indices[split.i * 3] = split.v0;
-			front->indices[(split.i * 3) + 1] = split.v1;
-			front->indices[(split.i * 3) + 2] = split.v2;
-			split.i++;
+			split.v0 = 0;
+			split.v1 = 1;
+			split.v2 = 2;
 		}
-		split.i = 0;
-		while (split.i < back->nb_indices / 3)
+		else
 		{
-			if (split.i == 0)
-			{
-				split.v0 = 0;
-				split.v1 = 1;
-				split.v2 = 2;
-			}
-			else
-			{
-				split.v1 = split.v2;
-				split.v2++;
-			}
-			back->indices[split.i * 3] = split.v0;
-			back->indices[(split.i * 3) + 1] = split.v1;
-			back->indices[(split.i * 3) + 2] = split.v2;
-			split.i++;
+			split.v1 = split.v2;
+			split.v2++;
 		}
-		front->normal = poly->normal;
-		back->normal = poly->normal;
-		//split.loop++;
-	//}
+		back->indices[split.i * 3] = split.v0;
+		back->indices[(split.i * 3) + 1] = split.v1;
+		back->indices[(split.i * 3) + 2] = split.v2;
+		split.i++;
+	}
+	front->normal = poly->normal;
+	back->normal = poly->normal;
 	//printf("FIN SPLIT POLY\n");
 }

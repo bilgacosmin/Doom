@@ -34,7 +34,7 @@ static t_tree *init_tree(int node)
 
 static void class_case0(t_tree *t, t_bsp *bsp) //on plane case
 {
-	printf("CC0\n");
+	//printf("CC0\n");
 	t->a = bsp->plane[bsp->node[t->node].plane].normal;
 	t->b = t->test->normal;
 	t->result = fabs((t->a.x - t->b.x) + (t->a.y - t->b.y) + (t->a.z - t->b.z));
@@ -53,7 +53,7 @@ static void class_case0(t_tree *t, t_bsp *bsp) //on plane case
 
 static void class_case1(t_tree *t, t_bsp *bsp) //front or back case
 {
-	printf("CC1\n");
+	//printf("CC1\n");
 	if (t->class == 1)
 	{
 		t->clone->next = t->front;
@@ -72,7 +72,7 @@ static void class_case2(t_tree *t, t_bsp *bsp)
 	t_poly	*front;
 	t_poly	*back;
 
-	printf("CC2\n");
+	//printf("CC2\n");
 	if (!(front = (t_poly*)malloc(sizeof(t_poly))))
 		return ;
 	if (!(back = (t_poly*)malloc(sizeof(t_poly))))
@@ -82,7 +82,7 @@ static void class_case2(t_tree *t, t_bsp *bsp)
 	//printf("HOP\n");
 	front->was_splitter = t->test->was_splitter;
 	back->was_splitter = t->test->was_splitter;
-	printf("BUILD WAS SPLIT %d %d\n", front->was_splitter, back->was_splitter);
+	//printf("BUILD WAS SPLIT %d %d\n", front->was_splitter, back->was_splitter);
 	front->texture = t->test->texture;
 	back->texture = t->test->texture;
 	free_poly(t->test);
@@ -124,7 +124,7 @@ void	build_bsp_tree(int node, t_bsp *bsp)
 	}
 	else
 	{
-		printf("NEW SPLIT\n");
+		//printf("NEW SPLIT\n");
 	}
 	//printf("TREE %p\n", t->test);
 	t->test = bsp->poly_list;
@@ -150,13 +150,16 @@ void	build_bsp_tree(int node, t_bsp *bsp)
 			t->count++;
 		t->temp = t->temp->next;
 	}
+	if (node == 17)
+		printf("t count %d \n", t->count);
 	calc_box(&bsp->node[t->node].bbox, t->front);
 	t->leaf_box = bsp->node[t->node].bbox;
 	calc_box(&bsp->node[t->node].bbox, t->back);
 	//printf("ICI ??\n");
 	if (t->count == 0)
 	{
-	//	printf("ON EST LAS\n");
+		if (node == 17)
+			printf("ON EST LAS %d\n", t->node);
 		t->iter = t->front;
 		bsp->leaf[bsp->nb_leafs].start_poly = bsp->nb_polys;
 		while (t->iter != NULL)

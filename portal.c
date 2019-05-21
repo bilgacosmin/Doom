@@ -35,6 +35,7 @@ t_portal *calculate_init_portal(t_bsp *bsp, int node)
 {
 	t_calcp calc;
 
+	printf("CREATE PORTAL\n");
 	calc.maxp = bsp->node[node].bbox.boxmax;
 	calc.minp = bsp->node[node].bbox.boxmin;
 	calc.plane_normal = bsp->plane[bsp->node[node].plane].normal;
@@ -95,5 +96,6 @@ t_portal *calculate_init_portal(t_bsp *bsp, int node)
 	calc.portal->indices[3] = 3;
 	calc.portal->indices[4] = 1;
 	calc.portal->indices[5] = 2;
+	printf("END CREATE PORTAL\n");
 	return (calc.portal);
 }

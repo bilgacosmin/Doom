@@ -24,10 +24,11 @@ void	init_inter(t_inter *inter, t_split	*split)
 int	get_inter(t_inter *inter)
 {
 	//printf("inTER\n");
-	inter->direction->x = inter->end->x - inter->start->x;
-	inter->direction->y = inter->end->y - inter->start->y;
-	inter->direction->z = inter->end->z - inter->start->z;
-	inter->line_len = inter->direction->x * inter->normal->x + inter->direction->y * inter->normal->y + inter->direction->z * inter->normal->z;
+	inter->direction.x = inter->end->x - inter->start->x;
+	//printf("Inter 0\n");
+	inter->direction.y = inter->end->y - inter->start->y;
+	inter->direction.z = inter->end->z - inter->start->z;
+	inter->line_len = inter->direction.x * inter->normal->x + inter->direction.y * inter->normal->y + inter->direction.z * inter->normal->z;
 	//printf("Inter 1\n");
 	if (fabs(inter->line_len) < 0.0001)
 		return (0);
@@ -48,8 +49,8 @@ int	get_inter(t_inter *inter)
 			return (0);
 	}
 	//printf("inter4\n");
-	inter->inter.x = inter->start->x + inter->direction->x * inter->perc;
-	inter->inter.y = inter->start->y + inter->direction->y * inter->perc;
-	inter->inter.z = inter->start->z + inter->direction->z * inter->perc;
+	inter->inter.x = inter->start->x + inter->direction.x * inter->perc;
+	inter->inter.y = inter->start->y + inter->direction.y * inter->perc;
+	inter->inter.z = inter->start->z + inter->direction.z * inter->perc;
 	return (1);
 }

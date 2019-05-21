@@ -73,6 +73,26 @@ void print_portals(t_portal **portal, int nb_portals)
 	printf("\n");
 }
 
+void print_nodes(t_node *node, int nb_nodes)
+{
+	int i;
+
+	printf("NB nodes %d\n", nb_nodes);
+	i = 0;
+	while (i <= nb_nodes)
+	{
+		printf("Node (%d)\nIs leaf: %d Plane: %d\n Front: %d Back %d\n", i, node[i].isleaf, node[i].plane, node[i].front, node[i].back);
+		i++;
+	}
+	printf("\n");
+}
+
+char	isleaf;
+	int		plane;
+	int		front;
+	int		back;
+	t_box	bbox;
+
 void print_bsp(t_bsp *bsp)
 {
 	printf("\n");
@@ -86,6 +106,7 @@ void print_bsp(t_bsp *bsp)
 	print_planes(bsp->plane, bsp->nb_planes);
 	print_leafs(bsp->leaf, bsp->nb_leafs);
 	print_portals(bsp->portal, bsp->nb_portals);
+	print_nodes(bsp->node, bsp->nb_nodes);
 	/*int			max_nodes;
 	int			max_polys;
 	int			max_planes;
@@ -104,7 +125,7 @@ void print_bsp(t_bsp *bsp)
 	int			nb_portals;*/
 }
 
-void print_nodes(t_poly *poly)
+void print_poly_list(t_poly *poly)
 {
 	int i;
 	int j;
