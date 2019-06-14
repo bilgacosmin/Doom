@@ -41,9 +41,13 @@ char class_poly(t_plane *plane, t_poly *poly)
 	c.i = 0;
 	while (c.i < poly->nb_ver)
 	{
+	//	printf("CLASS POLY 1 %d %p %d\n", poly->nb_ver, poly->ver_list, c.i);
 		c.v2 = poly->ver_list[c.i];
+	//	printf("CLASS POLY 1.05\n");
 		c.dir = vec_sub(c.v1, c.v2);
+	//	printf("CLASS POLY 1.1\n");
 		c.result = dot_prod(c.dir, plane->normal);
+	//	printf("CLASS POLY 1.2\n");
 		if (c.result < -0.001)
 			c.infront++;
 		else
@@ -57,6 +61,7 @@ char class_poly(t_plane *plane, t_poly *poly)
 				c.infront++;
 			}
 		}
+	//	printf("CLASS POLY 2\n");
 		c.i++;
 	}
 	//printf("FIN CLASS POLY\n");

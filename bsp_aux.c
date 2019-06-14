@@ -112,9 +112,9 @@ void	calc_box(t_box *box, t_poly *p)
 
 void	free_poly(t_poly *p)
 {
-	free(p->ver_list);
+/**	free(p->ver_list);
 	free(p->indices);
-	free(p);
+	free(p); **/
 }
 
 int		class_point(t_vec *pos, t_plane *plane)
@@ -155,4 +155,39 @@ void	vec_normalize(t_vec *a, t_vec *b)
 	b->x = a->x / magnitude;
 	b->y = a->y / magnitude;
 	b->z = a->z / magnitude;
+}
+
+t_portal *portal_copy(t_portal *portal)
+{
+	t_portal *copy;
+
+	if (!(copy = (t_portal*)malloc(sizeof(t_portal))))
+		exit(0);
+	if (!(copy->ver_list = (t_vec*)malloc(sizeof(t_vec) * portal->nb_ver)))
+		exit(0);
+	if (!(copy->indices = (int*)malloc(sizeof(int) * portal->nb_indices)))
+		exit(0);
+	copy->normal = portal->normal;
+	copy->nb_ver = portal->nb_ver;
+	copy->nb_indices = portal->nb_indices;
+	copy->nb_leafs = portal->nb_leafs;
+	copy->leafs[0] = portal->leafs[0];
+	copy->leafs[1] = portal->leafs[1];
+	return(copy);
+}
+
+t_plane get_portal_plane(t_portal *portal)
+{
+	t_plane plane;
+
+	plane.point = portal->ver_list[0];
+	plane.normal = portal->normal;
+	return (plane);
+}
+
+void  delete_pointer(void **pointer)
+{
+	if (*pointer != NULL)
+		free(*pointer);
+	*pointer = NULL;
 }

@@ -1,0 +1,6 @@
+polygon:2 1 0;2 4 0;2 4 5;2 1 5:AB
+polygon:2 4 0;4 4 0;4 4 5;2 4 5:BC
+polygon:4 4 0;4 3 0;4 3 5;4 4 5:CD
+polygon:4 3 0;3 3 0;3 3 5;4 3 5:DE
+polygon:3 3 0;3 1 0;3 1 5;3 3 5:EF
+polygon:3 1 0;2 1 0;2 1 5;3 1 5:FA

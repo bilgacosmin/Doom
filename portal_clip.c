@@ -22,17 +22,17 @@ void init_pclip(t_pclip *pclip)
 	pclip->result = 0;
 }
 
-void split_portal(t_pclip *pclip, t_portal *portal, t_plane *plane)
+void split_portal(t_portal *front, t_portal *back, t_portal *portal, t_plane *plane)
 {
 	//printf("split portal\n");
-	split_poly((t_poly*)portal, plane, (t_poly*)(pclip->front_split), (t_poly*)(pclip->back_split));
+	split_poly((t_poly*)portal, plane, (t_poly*)(front), (t_poly*)(back));
 	//printf("split portal 2\n");
-	pclip->front_split->nb_leafs = portal->nb_leafs;
-	pclip->back_split->nb_leafs = portal->nb_leafs;
-	pclip->front_split->leafs[0] = portal->leafs[0];
-	pclip->front_split->leafs[1] = portal->leafs[1];
-	pclip->back_split->leafs[0] = portal->leafs[0];
-	pclip->back_split->leafs[1] = portal->leafs[1];
+	front->nb_leafs = portal->nb_leafs;
+	back->nb_leafs = portal->nb_leafs;
+	front->leafs[0] = portal->leafs[0];
+	front->leafs[1] = portal->leafs[1];
+	back->leafs[0] = portal->leafs[0];
+	back->leafs[1] = portal->leafs[1];
 	//printf("fin split portal\n");
 }
 
@@ -94,7 +94,7 @@ t_portal *clip_portal(t_bsp *bsp, int node, t_portal *portal)
 		init_portal(pclip.front_split);
 		init_portal(pclip.back_split);
 		//printf("inits\n");
-		split_portal(&pclip, portal, &bsp->plane[bsp->node[node].plane]); ///to check
+		split_portal(pclip.front_split, pclip.back_split, portal, &bsp->plane[bsp->node[node].plane]); ///to check
 		//printf("post_split\n");
 		delete_portal(portal);
 		//printf("post delete\n");

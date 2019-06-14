@@ -35,16 +35,16 @@ t_portal *calculate_init_portal(t_bsp *bsp, int node)
 {
 	t_calcp calc;
 
-	printf("CREATE PORTAL\n");
+	//printf("CREATE PORTAL %f %f\n", bsp->node[node].bbox.boxmax.z, bsp->node[node].bbox.boxmin.z);
 	calc.maxp = bsp->node[node].bbox.boxmax;
 	calc.minp = bsp->node[node].bbox.boxmin;
 	calc.plane_normal = bsp->plane[bsp->node[node].plane].normal;
 	calc.cb.x = (calc.maxp.x + calc.minp.x) / 2;
 	calc.cb.y = (calc.maxp.y + calc.minp.y) / 2;
-	calc.cb.x = (calc.maxp.z + calc.minp.z) / 2;
-	calc.dist_plane = (bsp->plane[bsp->node[node].plane].point.x - calc.cb.x) * calc.plane_normal.x
-		+ (bsp->plane[bsp->node[node].plane].point.y - calc.cb.y) * calc.plane_normal.y
-		+ (bsp->plane[bsp->node[node].plane].point.z - calc.cb.z) * calc.plane_normal.z;
+	calc.cb.z = (calc.maxp.z + calc.minp.z) / 2;
+	calc.dist_plane = ((bsp->plane[bsp->node[node].plane].point.x - calc.cb.x) * calc.plane_normal.x)
+		+ ((bsp->plane[bsp->node[node].plane].point.y - calc.cb.y) * calc.plane_normal.y)
+		+ ((bsp->plane[bsp->node[node].plane].point.z - calc.cb.z) * calc.plane_normal.z);
 	calc.cp.x = calc.cb.x + (calc.plane_normal.x * calc.dist_plane);
 	calc.cp.y = calc.cb.y + (calc.plane_normal.y * calc.dist_plane);
 	calc.cp.z = calc.cb.z + (calc.plane_normal.z * calc.dist_plane);
@@ -60,7 +60,7 @@ t_portal *calculate_init_portal(t_bsp *bsp, int node)
 	}
 	else
 	{
-		if (fabs(calc.plane_normal.y) < fabs(calc.plane_normal.x))
+		if (fabs(calc.plane_normal.y) <= fabs(calc.plane_normal.x))
 			calc.a.y = 1;
 		else
 			calc.a.x = 1;
@@ -96,6 +96,6 @@ t_portal *calculate_init_portal(t_bsp *bsp, int node)
 	calc.portal->indices[3] = 3;
 	calc.portal->indices[4] = 1;
 	calc.portal->indices[5] = 2;
-	printf("END CREATE PORTAL\n");
+	//printf("END CREATE PORTAL %f %f %f\n", calc.portal->ver_list[0].x, calc.portal->ver_list[0].y, calc.portal->ver_list[0].z);
 	return (calc.portal);
 }

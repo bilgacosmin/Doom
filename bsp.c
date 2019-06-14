@@ -30,7 +30,6 @@ void	bsp_init(t_bsp *bsp)
 			return ;
 	bsp->poly_list = loadMap("test_poly.txt");
 	triangulize(bsp->poly_list);
-    //BYTE *PVSData;
     bsp->nb_polys = 0;
     bsp->nb_nodes = 0;
     bsp->nb_leafs = 0;

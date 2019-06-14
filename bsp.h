@@ -147,7 +147,8 @@ typedef struct	s_bsp //global use
 	t_leaf		*leaf;
 	t_plane		*plane;
 	t_portal	**portal; //tableau d'adresses de portails
-	//BYTE *PVSData;
+	char	*pvs;
+	int 		pvs_size;
 	int			nb_polys;
 	int			nb_nodes;
 	int			nb_leafs;
@@ -243,16 +244,6 @@ typedef struct s_pclip
 	int result;
 }				t_pclip;
 
-typedef struct	s_bportal
-{
-	int pointer;
-	int index;
-	t_portal *inital; //node index
-	t_portal *p_list;
-	t_portal *iter;
-	t_portal *tmp;
-}				t_bportal;
-
 typedef struct s_chk_dup
 {
 	int check1;
@@ -287,6 +278,70 @@ typedef struct s_buildp
 	t_portal *iter;
 	t_portal *tmp;
 }				t_buildp;
+
+typedef struct s_rec
+{
+	int generator_leaf;
+	t_vec *slc;
+	t_vec *tlc;
+	t_portal *source_portal;
+	t_portal *generator_portal;
+	int gp_index;
+	int sll;
+	int tll;
+	int gen_location;
+	t_plane tmp_plane;
+	t_portal *source_copy;
+	t_portal *target_copy;
+	int 	target_leafc;	
+}				t_rec;
+
+typedef struct s_cpvs
+{
+	char 	*leaf_pvs;
+	long 	pvs_pointer;
+	int 	leaf;
+	int 	sp_index;
+	int 	dp_index;
+	t_portal *source_portal;
+	t_portal *target_portal;
+	t_plane temp_plane;																																																						
+	int 	target_leaf;
+}				t_cpvs;
+
+typedef struct s_clipplanes
+{
+	int nb_planes;
+	t_plane *plane;
+}				t_clipplanes;
+
+typedef struct s_cap
+{
+	t_vec edge1;
+	t_vec edge2;
+	t_vec normal;
+	t_portal *front_split;
+	t_portal *back_split;
+	t_portal *temp_source;
+	t_portal *temp_target;
+	t_clipplanes clipplanes;
+	t_plane  temp_plane;
+	int   	portal_location;
+	int 	s_portal_location;
+	int 	next_vertex;
+	int 	i;
+	int 	sv; //source vertex
+	int 	tmp;
+}				t_cap;
+
+typedef struct s_cl 
+{
+	int i;
+	int rep;
+	char *dest;
+	char *dest_p;
+	int bytes_per_set;
+}				t_cl;
 
 void 	add_vertices(t_poly *new, char *line, int i);
 void 	add_poly(t_poly **list, char *line);
@@ -334,5 +389,15 @@ void 	build_portal_start(t_bsp *bsp, t_buildp *buildp);
 void 	build_portal_back(t_bsp *bsp, t_buildp *buildp);
 void	build_portal_end(t_bsp *bsp, t_buildp *buildp);
 void 	print_poly_list(t_poly *poly);
+void	split_portal(t_portal *front, t_portal *back, t_portal *portal, t_plane *plane);
+t_portal *portal_copy(t_portal *portal);
+t_plane get_portal_plane(t_portal *portal);
+t_portal *clip_anti_penumbra(t_portal *source_portal, t_portal *target_portal, t_portal *generator_portal);
+void 	recurse_pvs(t_bsp *bsp, t_cpvs *cpvs);
+void 	set_pvs_bit(char *pvs, int leaf);
+int 	compress_leaf(t_bsp *bsp, char *leaf_pvs, int position);
+int 	calc_pvs(t_bsp *bsp);
+void  	delete_pointer(void **pointer);
+void 	print_pvs(t_bsp *bsp);
 
 #endif
