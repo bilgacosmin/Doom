@@ -88,13 +88,16 @@ int			select_splitter(t_bsp *bsp) //function choosing best splitter for a more b
 		}
 		s.splitter = s.splitter->next;
 	}
+	//printf("WTF\n");
 	if (s.selected == NULL) //si ily a plus de poly qui peuvent etre splitters
 		return (-1);
 	//printf("SELECT SPLIT\n");
 	s.selected->was_splitter = 1;
 	//printf("SELECT SPLIT22\n");
 	bsp->plane[bsp->nb_planes].point = s.selected->ver_list[0];
+	//printf("SELECT SPLIT 2.3\n");
 	bsp->plane[bsp->nb_planes].normal = s.selected->normal;
+	//printf("SELECT SPLIT 3\n");
 	inc_planes(bsp);
 	//printf("END SELECT SPLIT\n");
 	return (bsp->nb_planes - 1);

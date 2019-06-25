@@ -110,13 +110,6 @@ void	calc_box(t_box *box, t_poly *p)
 	}
 }
 
-void	free_poly(t_poly *p)
-{
-/**	free(p->ver_list);
-	free(p->indices);
-	free(p); **/
-}
-
 int		class_point(t_vec *pos, t_plane *plane)
 {
 	float	res;

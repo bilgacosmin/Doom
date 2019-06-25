@@ -115,22 +115,6 @@ void print_bsp(t_bsp *bsp)
 	print_portals(bsp->portal, bsp->nb_portals);
 	print_nodes(bsp->node, bsp->nb_nodes);
 	print_pvs(bsp);
-	/*int			max_nodes;
-	int			max_polys;
-	int			max_planes;
-	int			max_leafs;
-	int			max_portals;
-	t_poly		*poly;  //liste de polygons naive
-	t_node		*node;
-	t_leaf		*leaf;
-	t_plane		*plane;
-	//t_portal	**portal;
-	//BYTE *PVSData;
-	int			nb_polys;
-	int			nb_nodes;
-	int			nb_leafs;
-	int			nb_planes;
-	int			nb_portals;*/
 }
 
 void print_pvs(t_bsp *bsp)
@@ -144,25 +128,6 @@ void print_pvs(t_bsp *bsp)
 	c = 0;
 	while (i < bsp->pvs_size)
 	{
-		/**if (bsp->pvs[i] == 0)
-		{
-			i++;
-			j = 0;
-			while (j < bsp->pvs[i])
-			{
-				printf("0");
-				if ((bsp->nb_leafs - c) % bsp->nb_leafs == 0)
-					printf("\n");
-				c++;
-				j++;
-			}
-		}
-		else
-		{
-			printf("%d", bsp->pvs[i]);
-			if ((bsp->nb_leafs - c) % bsp->nb_leafs == 0)
-					printf("\n");
-		} **/
 		j = 128;
 		while (j > 0)
 		{
@@ -175,56 +140,6 @@ void print_pvs(t_bsp *bsp)
 	}
 	printf("\n");
 }
-
-/**void print_pvs(t_bsp *bsp)
-{
-	int i;
-	char *pointer;
-	int curr_leaf;
-	int leaf;
-	char mask;
-	char pvs;
-	char run;
-
-	printf("PVS\n");
-	leaf = 0;
-	while (leaf < bsp->nb_leafs)
-	{
-		pointer = bsp->pvs;// + bsp->leaf[leaf].pvs_index;
-		curr_leaf = 0;
-		while (curr_leaf < bsp->nb_leafs)
-		{
-			printf("Leaf n %d\n", curr_leaf);
-			if (*pointer != 0)
-			{
-				printf("IF\n");
-				i = 0;
-				while (i < 8)
-				{
-					mask = 1<<i; //(char)pow(2,i);
-					pvs = *pointer;
-					if (pvs&mask)
-						printf("1");
-					else
-						printf("0");
-					i++;
-					curr_leaf++;
-				}
-				pointer++;
-			}
-			else
-			{
-				printf("ELSE\n");
-				pointer++;
-				run = *pointer;
-				pointer++;
-				curr_leaf += run * 8;
-			}
-		}
-		leaf++;
-	}
-	printf("\n");
-} **/
 
 void print_poly_list(t_poly *poly)
 {

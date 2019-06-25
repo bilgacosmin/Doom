@@ -176,7 +176,7 @@ typedef struct	s_inter
 	t_vec	*normal;
 	t_vec	inter;
 	t_vec	direction;
-	t_vec	*l;
+	t_vec	l;
 	float	line_len;
 	float	dist;
 	float	perc;
@@ -343,6 +343,30 @@ typedef struct s_cl
 	int bytes_per_set;
 }				t_cl;
 
+typedef struct s_vp
+{
+	t_poly 	*list;
+	t_poly 	*curr;
+	int 	offset;
+	char 	*pointer;
+	int 	curr_leaf;
+	int  	i;
+	char	mask;
+	char 	pvs;
+	int  	start;
+	int 	finish;
+	int 	count;
+}				t_vp;
+
+typedef struct s_los
+{
+	t_node *curr;
+	t_plane *plane;
+	int point_a;
+	int point_b;
+	t_inter inter;
+}				t_los;
+
 void 	add_vertices(t_poly *new, char *line, int i);
 void 	add_poly(t_poly **list, char *line);
 t_vec	*create_vec(float x, float y, float z);
@@ -353,7 +377,7 @@ void    inc_leafs(t_bsp *bsp);
 void    inc_planes(t_bsp *bsp);
 void	inc_portals(t_bsp *bsp);
 void	calc_box(t_box *box, t_poly *p);
-void	free_poly(t_poly *p);
+//void	free_poly(t_poly *p);
 int		class_point(t_vec *pos, t_plane *plane);
 void	build_bsp_tree(int node, t_bsp *bsp);
 void	init_inter(t_inter *inter, t_split	*split);
@@ -399,5 +423,12 @@ int 	compress_leaf(t_bsp *bsp, char *leaf_pvs, int position);
 int 	calc_pvs(t_bsp *bsp);
 void  	delete_pointer(void **pointer);
 void 	print_pvs(t_bsp *bsp);
-
+t_bsp 	*bsp_compile();
+void 	free_bsp(t_bsp *bsp);
+void 	free_poly(t_poly *p);
+void 	free_poly_rec(t_poly *p);
+void 	free_poly_attr(t_poly *p);
+t_poly *visible_polygons(t_bsp *bsp, int leaf);
+t_poly *render_bsp(t_bsp *bsp, t_vec *pos);
+int 	line_of_sight(t_bsp *bsp, t_vec *start, t_vec *end, int node);
 #endif

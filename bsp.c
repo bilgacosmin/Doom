@@ -20,6 +20,8 @@ void	bsp_init(t_bsp *bsp)
     bsp->max_planes = 100;
     bsp->max_leafs = 100;
     bsp->max_portals = 100;
+    if (!(bsp->plane = (t_plane*)malloc(sizeof(t_plane) * bsp->max_planes)))
+		return ;
     if (!(bsp->poly = (t_poly*)malloc(sizeof(t_poly) * bsp->max_polys)))
 		return ;
 	if (!(bsp->node = (t_node*)malloc(sizeof(t_node) * bsp->max_nodes)))

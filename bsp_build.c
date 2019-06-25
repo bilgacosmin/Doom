@@ -117,6 +117,7 @@ void	build_bsp_tree(int node, t_bsp *bsp)
 	t = init_tree(node);
 	//printf("TREE2 %d\n", bsp->node[t->node].plane);
 	bsp->node[t->node].plane = select_splitter(bsp);
+	//printf("TREE 3\n");
 	if (bsp->node[t->node].plane == -1)
 	{
 		free(t);
